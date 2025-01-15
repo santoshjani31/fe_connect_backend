@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../controllers/activity_controller.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert'; 
+
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -17,6 +20,28 @@ class MyHomePage extends StatelessWidget {
           ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
+                FutureBuilder<String>(
+                    future: fetchQuote(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Text("Error: ${snapshot.error}"),
+                        );
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            snapshot.data ?? "No quote available",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }
+                    }),
                 ElevatedButton(
                   onPressed: controller.getActivities,
                   child: const Text('Get Activities'),
@@ -37,5 +62,20 @@ class MyHomePage extends StatelessWidget {
               ],
             ),
     );
+  }
+}
+
+Future<String> fetchQuote() async {
+  try {
+    final response =
+        await http.get(Uri.parse('https://zenquotes.io/api/random'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data[0]['q'];
+    } else {
+      return "Error: Unable to fetch quote. (${response.statusCode})";
+    }
+  } catch (error) {
+    return "An error occurred: $error";
   }
 }
