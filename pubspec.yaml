@@ -1,0 +1,33 @@
+name: fe_connect_backend
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # Firebase dependencies (compatible versions)
+  firebase_core: ^2.16.0  # Firebase core version 2.x.x
+  firebase_auth: ^4.16.0  # Downgraded firebase_auth to 4.16.0 for compatibility
+  firebase_auth_web: ^5.8.13  # firebase_auth_web 5.x.x (latest compatible with firebase_core 2.x.x)
+  cloud_firestore: ^4.10.0  # cloud_firestore compatible with firebase_core 2.x.x
+
+  # HTTP package
+  http: ^0.13.3
+
+  # Provider package for state management
+  provider: ^6.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
