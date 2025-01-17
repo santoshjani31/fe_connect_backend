@@ -1,4 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Activity {
   final String title;
@@ -11,22 +12,31 @@ class Activity {
     required this.category,
   });
 
-  factory Activity.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+  factory Activity.fromJson(Map<String, dynamic> json) {
     return Activity(
-      title: data['title'] ?? 'No Title',
-      description: data['description'] ?? 'No Description',
-      category: data['category'] ?? 'No Category',
+      title: json['title'] ?? 'No Title',
+      description: json['description'] ?? 'No Description',
+      category: json['category'] ?? 'No Category',
     );
   }
 }
 
 class ActivityRepository {
-  final CollectionReference activitiesCollection =
-      FirebaseFirestore.instance.collection('Activities');
+  final String apiUrl = 'https://us-central1-proj-gr-2-wellness-app.cloudfunctions.net/api/activities';
 
   Future<List<Activity>> fetchActivities() async {
-    QuerySnapshot snapshot = await activitiesCollection.get();
-    return snapshot.docs.map((doc) => Activity.fromFirestore(doc)).toList();
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = json.decode(response.body);
+        final List<dynamic> activitiesList = jsonData['activities'];
+        return activitiesList.map((item) => Activity.fromJson(item)).toList();
+      } else {
+        throw Exception('Failed to fetch activities. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching activities: $e');
+    }
   }
 }

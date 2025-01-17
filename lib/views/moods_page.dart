@@ -7,7 +7,7 @@ class MoodsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Keep the background color white
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Select Your Mood'),
       ),
@@ -20,12 +20,12 @@ class MoodsPage extends StatelessWidget {
               "How are you feeling today ...",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20), // Spacing between text and buttons
+            const SizedBox(height: 20), 
             GridView.count(
-              crossAxisCount: 2, // Arrange buttons in 2 columns
+              crossAxisCount: 2, 
               shrinkWrap: true,
-              crossAxisSpacing: 16.0, // Horizontal spacing
-              mainAxisSpacing: 16.0, // Vertical spacing
+              crossAxisSpacing: 16.0, 
+              mainAxisSpacing: 16.0,
               children: [
                 _buildMoodButton(
                   context,
@@ -79,7 +79,7 @@ class MoodsPage extends StatelessWidget {
         style: const TextStyle(
           fontSize: 18.0,
           fontWeight: FontWeight.bold,
-          color: Colors.black, // Ensure text is readable on bright backgrounds
+          color: Colors.black,
         ),
       ),
     );
