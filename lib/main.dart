@@ -1,11 +1,12 @@
-import 'package:fe_connect_backend/views/basescreen.dart';
-import 'package:fe_connect_backend/views/browse_page.dart';
-import 'package:fe_connect_backend/views/journal_page.dart';
-import 'package:fe_connect_backend/views/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'controllers/activity_controller.dart';
+import 'package:fe_connect_backend/views/browse_page.dart';
+import 'package:fe_connect_backend/views/journal_page.dart';
+import 'package:fe_connect_backend/views/login_page.dart';
+import 'package:fe_connect_backend/views/basescreen.dart';
+import 'package:fe_connect_backend/views/animation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,16 +38,18 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Mindfulness and Wellness',
         theme: ThemeData(primarySwatch: Colors.blue),
-        initialRoute: '/login',
+        initialRoute: '/animation',
         routes: {
           '/login': (context) => const LoginPage(),
           '/home': (context) => const BaseScreen(),
           '/browse': (context) => const ExploreScreen(),
           '/journal': (context) => const JournalScreen(),
+          '/animation': (context) => const SplashScreen(),
         },
         onUnknownRoute: (settings) {
           return MaterialPageRoute(
-              builder: (context) => const LoginPage());
+            builder: (context) => const LoginPage(),
+          );
         },
       ),
     );

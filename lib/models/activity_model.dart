@@ -11,7 +11,6 @@ class Activity {
     required this.category,
   });
 
-  // Factory method to create an Activity from Firestore document data
   factory Activity.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Activity(
