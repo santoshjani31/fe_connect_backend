@@ -2,10 +2,12 @@ import 'package:fe_connect_backend/views/basescreen.dart';
 import 'package:fe_connect_backend/views/browse_page.dart';
 import 'package:fe_connect_backend/views/journal_page.dart';
 import 'package:fe_connect_backend/views/login_page.dart';
+import 'package:fe_connect_backend/views/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'controllers/activity_controller.dart';
+import 'package:fe_connect_backend/views/moods_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,13 +34,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ActivityController(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ActivityController()),
+        ChangeNotifierProvider(create: (_) => MoodProvider()),
+      ],
       child: MaterialApp(
         title: 'Mindfulness and Wellness',
         theme: ThemeData(primarySwatch: Colors.blue),
-        initialRoute: '/login',
+        initialRoute: '/animation',
         routes: {
+          '/animation': (context) => const SplashScreen(),
           '/login': (context) => const LoginPage(),
           '/home': (context) => const BaseScreen(),
           '/browse': (context) => const ExploreScreen(),

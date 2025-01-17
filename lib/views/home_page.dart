@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../models/activity_model.dart';
+import 'package:fe_connect_backend/views/moods_page.dart';
 import 'package:provider/provider.dart';
-import '../controllers/activity_controller.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  late Future<String> _quoteFuture;
-  bool _hasLoadedActivities = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _quoteFuture = fetchQuote(); 
-  }
 
   Future<String> fetchQuote() async {
     try {
@@ -36,9 +23,14 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<List<Activity>> getActivities(selectedMood) async {
+    final repository = ActivityRepository();
+    return await repository.fetchActivities(selectedMood);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<ActivityController>(context);
+    final selectedMood = Provider.of<MoodProvider>(context).selectedMood;
 
     return Scaffold(
       appBar: AppBar(
@@ -47,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           FutureBuilder<String>(
-            future: _quoteFuture,
+            future: fetchQuote(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Padding(
@@ -77,34 +69,70 @@ class _MyHomePageState extends State<MyHomePage> {
               }
             },
           ),
-          if (!_hasLoadedActivities)
-            ElevatedButton(
-              onPressed: () async {
-                await controller.getActivities();
-                setState(() {
-                  _hasLoadedActivities = true;
-                });
-              },
-              child: const Text('Get Activities'),
-            ),
           Expanded(
-            child: controller.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: controller.activities.length,
+            child: FutureBuilder<List<Activity>>(
+              future: getActivities(selectedMood),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      'Error: ${snapshot.error}',
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      'No activities available.',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  );
+                } else {
+                  final activities = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: activities.length,
                     itemBuilder: (context, index) {
-                      final activity = controller.activities[index];
+                      final activity = activities[index];
                       return ListTile(
                         title: Text(activity.title),
                         subtitle: Text(activity.description),
                         trailing: Text(activity.category),
                       );
                     },
-                  ),
+                  );
+                }
+              },
+            ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {
+                Navigator.pushNamed(context, '/home');
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.list),
+              onPressed: () {
+                Navigator.pushNamed(context, '/browse');
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.book),
+              onPressed: () {
+                Navigator.pushNamed(context, '/journal');
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-

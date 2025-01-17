@@ -6,7 +6,7 @@ class ExploreScreen extends StatelessWidget {
 
   Future<List<Activity>> getActivities() async {
     final repository = ActivityRepository();
-    return await repository.fetchActivities();
+    return await repository.fetchActivities("");
 
   }
   @override

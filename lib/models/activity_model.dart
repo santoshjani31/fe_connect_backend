@@ -22,10 +22,13 @@ class Activity {
 }
 
 class ActivityRepository {
-  final String apiUrl = 'https://us-central1-proj-gr-2-wellness-app.cloudfunctions.net/api/activities';
+  final String baseUrl = 'https://api-rarz3eo25q-uc.a.run.app/activities';
 
-  Future<List<Activity>> fetchActivities() async {
+  Future<List<Activity>> fetchActivities(String selectedMood) async {
     try {
+      final String apiUrl = '$baseUrl?moodTag=$selectedMood';
+      //ignore: avoid_print
+      print(selectedMood);
       final response = await http.get(Uri.parse(apiUrl));
 
       if (response.statusCode == 200) {

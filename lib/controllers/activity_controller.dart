@@ -5,17 +5,22 @@ class ActivityController extends ChangeNotifier {
   final ActivityRepository _repository = ActivityRepository();
   List<Activity> activities = [];
   bool isLoading = false;
+  bool _hasLoadedActivities = false;
 
-  Future<void> getActivities() async {
+  bool get hasLoadedActivities => _hasLoadedActivities;
+
+  Future<void> getActivities(String selectedMood) async {
     isLoading = true;
     notifyListeners();
     try {
-      activities = await _repository.fetchActivities();
+      activities = await _repository.fetchActivities(selectedMood);
+      _hasLoadedActivities = true;
+    } catch (error) {
+      _hasLoadedActivities = false;
+      rethrow;
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
 }
-
-
