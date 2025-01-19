@@ -23,7 +23,7 @@ class MyHomePage extends StatelessWidget {
     }
   }
 
-  Future<List<Activity>> getActivities(selectedMood) async {
+  Future<List<Activity>> getActivities(String selectedMood) async {
     final repository = ActivityRepository();
     return await repository.fetchActivities(selectedMood);
   }
@@ -107,31 +107,6 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.home),
-              onPressed: () {
-                Navigator.pushNamed(context, '/home');
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.list),
-              onPressed: () {
-                Navigator.pushNamed(context, '/browse');
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.book),
-              onPressed: () {
-                Navigator.pushNamed(context, '/journal');
-              },
-            ),
-          ],
-        ),
       ),
     );
   }

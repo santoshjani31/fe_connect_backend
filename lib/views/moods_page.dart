@@ -18,18 +18,6 @@ class MoodsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => MoodProvider(),
-      child: const MoodsPageContent(),
-    );
-  }
-}
-
-class MoodsPageContent extends StatelessWidget {
-  const MoodsPageContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -51,10 +39,10 @@ class MoodsPageContent extends StatelessWidget {
               crossAxisSpacing: 16.0,
               mainAxisSpacing: 16.0,
               children: [
-                _buildMoodButton(context, 'Happy', Colors.yellow.shade300),
-                _buildMoodButton(context, 'Anxious', Colors.blue.shade200),
-                _buildMoodButton(context, 'Stressed', Colors.red.shade200),
-                _buildMoodButton(context, 'Sad', Colors.purple.shade200),
+                _buildMoodButton(context, 'happy', Colors.yellow.shade300),
+                _buildMoodButton(context, 'anxious', Colors.blue.shade200),
+                _buildMoodButton(context, 'stressed', Colors.red.shade200),
+                _buildMoodButton(context, 'sad', Colors.purple.shade200),
               ],
             ),
           ],
@@ -64,32 +52,27 @@ class MoodsPageContent extends StatelessWidget {
   }
 
   Widget _buildMoodButton(BuildContext context, String label, Color color) {
-  return ElevatedButton(
-    onPressed: () {
-      Provider.of<MoodProvider>(context, listen: false).updateMood(label);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MyHomePage(),
+    return ElevatedButton(
+      onPressed: () {
+        Provider.of<MoodProvider>(context, listen: false).updateMood(label);
+        Navigator.pushReplacementNamed(context, '/home');
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
         ),
-      );
-    },
-    style: ElevatedButton.styleFrom(
-      backgroundColor: color,
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
+        elevation: 5,
       ),
-      elevation: 5,
-    ),
-    child: Text(
-      label,
-      style: const TextStyle(
-        fontSize: 18.0,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

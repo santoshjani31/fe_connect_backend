@@ -33,6 +33,8 @@ class ActivityRepository {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
+        //ignore: avoid_print
+        print('API Response: ${response.body}');
         final List<dynamic> activitiesList = jsonData['activities'];
         return activitiesList.map((item) => Activity.fromJson(item)).toList();
       } else {
