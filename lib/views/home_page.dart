@@ -97,14 +97,27 @@ class MyHomePage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final activity = activities[index];
                       return ListTile(
+                        // leading: Image.asset(activity.imageUrl,
+                        //     width: 50, height: 50, fit: BoxFit.cover),
                         title: Text(activity.title),
                         subtitle: Text(activity.description),
-                        trailing: Text(activity.category),
+                        // trailing: Icon(
+                        //   activity.audioUrl != null &&
+                        //           activity.audioUrl!.isNotEmpty
+                        //       ? Icons
+                        //           .audiotrack // Dacă are audio, afișează o pictogramă de sunet
+                        //       : Icons
+                        //           .info_outline, // Dacă nu are audio, afișează o pictogramă de informații
+                        //   color: activity.audioUrl != null
+                        //       ? Colors.green
+                        //       : Colors.grey,
+                        // ),
                         onTap: () {
                           Navigator.push(
                             context,
-                          MaterialPageRoute(
-                          builder: (context) => ActivityDetailPage(activity: activity),
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ActivityDetailPage(activity: activity),
                             ),
                           );
                           },
