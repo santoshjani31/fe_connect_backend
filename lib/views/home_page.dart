@@ -4,6 +4,7 @@ import 'dart:convert';
 import '../models/activity_model.dart';
 import 'package:fe_connect_backend/views/moods_page.dart';
 import 'package:provider/provider.dart';
+import 'package:fe_connect_backend/views/activity_details.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
@@ -99,7 +100,17 @@ class MyHomePage extends StatelessWidget {
                         title: Text(activity.title),
                         subtitle: Text(activity.description),
                         trailing: Text(activity.category),
-                      );
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                          MaterialPageRoute(
+                          builder: (context) => ActivityDetailPage(activity: activity),
+                            ),
+                          );
+                          },
+                        );
+
+                      
                     },
                   );
                 }

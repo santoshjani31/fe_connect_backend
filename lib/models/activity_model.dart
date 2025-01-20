@@ -27,14 +27,10 @@ class ActivityRepository {
   Future<List<Activity>> fetchActivities(String selectedMood) async {
     try {
       final String apiUrl = '$baseUrl?moodTag=$selectedMood';
-      //ignore: avoid_print
-      print(selectedMood);
       final response = await http.get(Uri.parse(apiUrl));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
-        //ignore: avoid_print
-        print('API Response: ${response.body}');
         final List<dynamic> activitiesList = jsonData['activities'];
         return activitiesList.map((item) => Activity.fromJson(item)).toList();
       } else {

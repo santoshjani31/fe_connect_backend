@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/activity_model.dart';
+import 'package:fe_connect_backend/views/activity_details.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -7,8 +8,8 @@ class ExploreScreen extends StatelessWidget {
   Future<List<Activity>> getActivities() async {
     final repository = ActivityRepository();
     return await repository.fetchActivities("");
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,32 +36,42 @@ class ExploreScreen extends StatelessWidget {
             itemCount: activities.length,
             itemBuilder: (context, index) {
               final activity = activities[index];
-              return Card(
-                margin: const EdgeInsets.all(8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      activity.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ActivityDetailPage(activity: activity),
+                    ),
+                  );
+                },
+                child: Card(
+                  margin: const EdgeInsets.all(8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        activity.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      activity.description,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      activity.category,
-                      style: const TextStyle(
-                        fontStyle: FontStyle.italic,
+                      const SizedBox(height: 8),
+                      Text(
+                        activity.description,
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                      const SizedBox(height: 8),
+                      Text(
+                        activity.category,
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
