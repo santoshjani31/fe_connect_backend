@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'moods_page.dart';
-import '../models/user_model.dart'; // Import the User Model
+//import 'moods_page.dart';
+import 'basescreen.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
@@ -17,52 +16,15 @@ class SignupPage extends StatelessWidget {
 
     Future<void> createUser() async {
       try {
-        final userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
 
-        // Get the current user's UID (after successful creation)
-        final uid = userCredential.user?.uid;
-
-        if (uid != null) {
-          // Create a UserModel object
-          UserModel userModel = UserModel(
-            uid: uid,
-            email: emailController.text.trim(),
-            firstName: firstNameController.text.trim(),
-            lastName: lastNameController.text.trim(),
-            username: usernameController.text.trim(),
-          );
-
-          // Add the user to the Firestore database
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(uid)
-              .set(userModel.toMap());
-
-
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => MoodsPage()),
-          );
-        } else {
-          // Handle case where uid is null (unlikely but possible)
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Error'),
-              content: const Text('Failed to create user. Please try again.'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          );
-        }
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const BaseScreen()),
+        );
       } on FirebaseAuthException catch (e) {
         String errorMessage = 'An error occurred. Please try again.';
         if (e.code == 'email-already-in-use') {
