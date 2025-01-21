@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen>
       body: Center(
         child: ScaleTransition(
           scale: _animation,
-          child: Image.asset('assets/logo.png'),
+          child: Image.asset('assets/lavenderlogo.jpg'),
         ),
       ),
     );

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'controllers/activity_controller.dart';
 import 'package:fe_connect_backend/views/moods_page.dart';
+import './controllers/journal_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => ActivityController()),
         ChangeNotifierProvider(create: (_) => MoodProvider()),
+        ChangeNotifierProvider(create: (_) => JournalController()),
       ],
       child: MaterialApp(
         title: 'Mindfulness and Wellness',
