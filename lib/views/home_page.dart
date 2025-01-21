@@ -29,6 +29,23 @@ class MyHomePage extends StatelessWidget {
     return await repository.fetchActivities(selectedMood);
   }
 
+  Future<Map<String, dynamic>?> fetchRelatedArticle(String mood) async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://api-rarz3eo25q-uc.a.run.app/articles?mood=$mood'),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data.containsKey('articles') && data['articles'].isNotEmpty) {
+          return data['articles'][0];
+        }
+      }
+    } catch (error) {
+      debugPrint('Error fetching article: $error');
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final selectedMood = Provider.of<MoodProvider>(context).selectedMood;
@@ -39,6 +56,13 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: const Text(
+              "Quote of the Day",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
           FutureBuilder<String>(
             future: fetchQuote(),
             builder: (context, snapshot) {
@@ -69,6 +93,13 @@ class MyHomePage extends StatelessWidget {
                 );
               }
             },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              "Here are some activities that can help with feeling $selectedMood:",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
           ),
           Expanded(
             child: FutureBuilder<List<Activity>>(
@@ -103,15 +134,72 @@ class MyHomePage extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                          MaterialPageRoute(
-                          builder: (context) => ActivityDetailPage(activity: activity),
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ActivityDetailPage(activity: activity),
                             ),
                           );
-                          },
-                        );
-
-                      
+                        },
+                      );
                     },
+                  );
+                }
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              "Here is an article that can help with feeling $selectedMood:",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<Map<String, dynamic>?>(
+              future: fetchRelatedArticle(selectedMood),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError || snapshot.data == null) {
+                  return const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "No related articles available.",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  );
+                } else {
+                  final article = snapshot.data!;
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          article['title'],
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Text(
+                              article['body'],
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Author: ${article['author']}",
+                          style: const TextStyle(
+                              fontSize: 14, fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
                   );
                 }
               },
