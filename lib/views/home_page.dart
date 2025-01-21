@@ -97,8 +97,8 @@ class MyHomePage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final activity = activities[index];
                       return ListTile(
-                        // leading: Image.asset(activity.imageUrl,
-                        //     width: 50, height: 50, fit: BoxFit.cover),
+                        leading: Image.asset(activity.imageUrl,
+                            width: 50, height: 50, fit: BoxFit.cover),
                         title: Text(activity.title),
                         subtitle: Text(activity.description),
                         // trailing: Icon(
