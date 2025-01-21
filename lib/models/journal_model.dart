@@ -3,15 +3,33 @@ import 'package:http/http.dart' as http;
 
 class Journal {
   final String title;
+  final String body;
+  final String mood;
+  final dynamic timestamp;
 
   Journal({
     required this.title,
+    required this.body,
+    required this.mood,
+    required this.timestamp,
   });
 
-  factory Journal.fromJson(Map<String, dynamic> json) {
+  factory Journal.fromJson(Map<dynamic, dynamic> json) {
     return Journal(
       title: json['title'] ?? 'No Title',
+      body: json['body'] ?? 'No Description',
+      mood: json['mood'] ?? 'Unknown Mood',
+      timestamp: json['timestamp'] ?? 'Unknown Timestamp',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'body': title,
+      'mood': mood,
+      'timestamp': title,
+    };
   }
 }
 
@@ -38,5 +56,4 @@ class JournalRepository {
       throw Exception('Error fetching journals: $e');
     }
   }
-
 }
