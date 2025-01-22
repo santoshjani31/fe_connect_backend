@@ -41,7 +41,8 @@ class ExploreScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ActivityDetailPage(activity: activity),
+                      builder: (context) =>
+                          ActivityDetailPage(activity: activity),
                     ),
                   );
                 },
@@ -50,19 +51,21 @@ class ExploreScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        activity.title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        activity.description,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 8),
+                      Padding(
+                          padding: const EdgeInsets.all(2),
+                          child: Text(
+                            activity.title,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          )),
+                      // const SizedBox(height: 5),
+                      // Text(
+                      //   activity.description,
+                      //   textAlign: TextAlign.center,
+                      // ),
+                      const SizedBox(height: 5),
                       Text(
                         activity.category,
                         style: const TextStyle(
