@@ -43,16 +43,6 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Mindfulness and Wellness',
-        theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Color(0xFFD3D3FF),
-              brightness: Brightness.light,
-              primary: Color(0xFF090933),
-              secondary: Color(0xFF80EFFF),
-            ),
-            textTheme: TextTheme(
-                titleLarge: const TextStyle(
-                    fontSize: 72, fontWeight: FontWeight.bold))),
         initialRoute: '/animation',
         routes: {
           '/animation': (context) => const SplashScreen(),

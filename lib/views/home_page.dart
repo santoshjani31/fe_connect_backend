@@ -51,19 +51,13 @@ class MyHomePage extends StatelessWidget {
     final selectedMood = Provider.of<MoodProvider>(context).selectedMood;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Activities'),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Quote of the Day",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            FutureBuilder<String>(
+            Card(
+                child: FutureBuilder<String>(
               future: fetchQuote(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -81,7 +75,7 @@ class MyHomePage extends StatelessWidget {
                   );
                 } else {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       snapshot.data ?? "No quote available",
                       style: const TextStyle(
@@ -93,9 +87,12 @@ class MyHomePage extends StatelessWidget {
                   );
                 }
               },
+            )),
+            const SizedBox(
+              height: 20,
             ),
             Text(
-              "Here are some activities that can help with feeling $selectedMood:",
+              "Activities for feeling $selectedMood:",
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             FutureBuilder<List<Activity>>(
@@ -127,29 +124,30 @@ class MyHomePage extends StatelessWidget {
                   return Column(
                     children: activities
                         .map(
-                          (activity) => ListTile(
-                            title: Text(activity.title),
-                            subtitle: Text(activity.description),
-                            trailing: Text(activity.category),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ActivityDetailPage(activity: activity),
-                                ),
-                              );
-                            },
-                          ),
+                          (activity) => Card(
+                              color: Color.fromARGB(255, 229, 229, 255),
+                              child: ListTile(
+                                title: Text(activity.title),
+                                trailing: Text(activity.category),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ActivityDetailPage(
+                                          activity: activity),
+                                    ),
+                                  );
+                                },
+                              )),
                         )
                         .toList(),
                   );
                 }
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             Text(
-              "Here is an article that can help with feeling $selectedMood:",
+              "Learn more about feeling $selectedMood:",
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             FutureBuilder<Map<String, dynamic>?>(

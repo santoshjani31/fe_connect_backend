@@ -194,24 +194,27 @@ class _JournalScreenState extends State<JournalScreen> {
                   itemBuilder: (context, index) {
                     final journal = controller.journals[index];
                     return Card(
+                      color: Color.fromARGB(255, 229, 229, 255),
                       margin: const EdgeInsets.all(8),
                       elevation: 3,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: ListTile(
+                      child: ExpansionTile(
                         title: Text(
                           journal.title,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        subtitle: Text(journal.mood),
+                        // subtitle: Text(journal.body),
+                        subtitle: Text('Feeling ${journal.mood}'),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.edit, color: Colors.blue),
+                              icon: const Icon(Icons.edit,
+                                  color: Color.fromARGB(195, 9, 9, 51)),
                               onPressed: () async {
                                 // Show the edit dialog
                                 await _showEditJournalDialog(
@@ -222,7 +225,8 @@ class _JournalScreenState extends State<JournalScreen> {
                               },
                             ),
                             IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
+                              icon: const Icon(Icons.delete,
+                                  color: Color.fromARGB(255, 204, 38, 26)),
                               onPressed: () async {
                                 final confirm = await showDialog<bool>(
                                   context: context,
@@ -252,6 +256,7 @@ class _JournalScreenState extends State<JournalScreen> {
                             ),
                           ],
                         ),
+                        children: [ListTile(title: Text(journal.body))],
                       ),
                     );
                   },
@@ -351,8 +356,9 @@ class _AddJournalEntryScreenState extends State<AddJournalEntryScreen> {
               ),
               TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(labelText: "Description"),
-                maxLines: 4,
+                decoration:
+                    const InputDecoration(labelText: "How is your day going?"),
+                maxLines: 10,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Please enter a description";

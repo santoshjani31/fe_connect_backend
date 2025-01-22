@@ -47,6 +47,7 @@ class ExploreScreen extends StatelessWidget {
                   );
                 },
                 child: Card(
+                  color: Color.fromARGB(255, 229, 229, 255),
                   margin: const EdgeInsets.all(8),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
