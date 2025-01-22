@@ -9,15 +9,11 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lavender')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Lavender',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+            Image.asset('assets/lavenderlogo.png'),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -119,20 +115,14 @@ class LoginFormPage extends StatelessWidget {
               child: const Text('Submit'),
             ),
             const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () {
+            ElevatedButton(
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SignupPage()),
                 );
               },
-              child: const Text(
-                'Signup',
-                style: TextStyle(
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
+              child: const Text('Signup'),
             ),
           ],
         ),

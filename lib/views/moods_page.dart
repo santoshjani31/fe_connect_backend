@@ -18,10 +18,6 @@ class MoodsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Select Your Mood'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -38,10 +34,10 @@ class MoodsPage extends StatelessWidget {
               crossAxisSpacing: 16.0,
               mainAxisSpacing: 16.0,
               children: [
-                _buildMoodButton(context, 'happy', Colors.yellow.shade300),
-                _buildMoodButton(context, 'anxious', Colors.blue.shade200),
+                _buildMoodButton(context, 'happy', Colors.yellow.shade100),
+                _buildMoodButton(context, 'anxious', Colors.purple.shade100),
                 _buildMoodButton(context, 'stressed', Colors.red.shade200),
-                _buildMoodButton(context, 'sad', Colors.purple.shade200),
+                _buildMoodButton(context, 'sad', Colors.blue.shade200),
               ],
             ),
           ],
@@ -68,8 +64,7 @@ class MoodsPage extends StatelessWidget {
         label,
         style: const TextStyle(
           fontSize: 18.0,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: Color(0xFF090933),
         ),
       ),
     );

@@ -43,7 +43,16 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Mindfulness and Wellness',
-        theme: ThemeData(primarySwatch: Colors.blue),
+        theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Color(0xFFD3D3FF),
+              brightness: Brightness.light,
+              primary: Color(0xFF090933),
+              secondary: Color(0xFF80EFFF),
+            ),
+            textTheme: TextTheme(
+                titleLarge: const TextStyle(
+                    fontSize: 72, fontWeight: FontWeight.bold))),
         initialRoute: '/animation',
         routes: {
           '/animation': (context) => const SplashScreen(),
@@ -53,8 +62,7 @@ class MyApp extends StatelessWidget {
           '/journal': (context) => const JournalScreen(),
         },
         onUnknownRoute: (settings) {
-          return MaterialPageRoute(
-              builder: (context) => const LoginPage());
+          return MaterialPageRoute(builder: (context) => const LoginPage());
         },
       ),
     );

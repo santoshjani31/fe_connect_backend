@@ -34,6 +34,7 @@ class _BaseScreenState extends State<BaseScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: Image.asset('assets/lavenderlogo.png'),
         actions: [
           if (user != null)
             Padding(
