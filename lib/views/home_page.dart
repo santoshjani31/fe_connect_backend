@@ -54,7 +54,8 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Activities'),
       ),
-      body: Column(
+      body: SingleChildScrollView(
+      child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -184,14 +185,14 @@ class MyHomePage extends StatelessWidget {
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Text(
-                              article['body'],
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                          ),
-                        ),
+                        // Expanded(
+                        //   child: SingleChildScrollView(
+                        //     child: Text(
+                        //       article['body'],
+                        //       style: const TextStyle(fontSize: 14),
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(height: 8),
                         Text(
                           "Author: ${article['author']}",
@@ -207,6 +208,7 @@ class MyHomePage extends StatelessWidget {
           ),
         ],
       ),
+      )
     );
   }
 }

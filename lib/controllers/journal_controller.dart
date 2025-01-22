@@ -7,7 +7,7 @@ class JournalController extends ChangeNotifier {
   bool isLoading = false;
 
   Future<void> getJournals(String userId) async {
-    debugPrint("Error fetching journals: $userId");
+    debugPrint("Fetching journals for user: $userId");
     isLoading = true;
     notifyListeners();
     try {
@@ -22,4 +22,14 @@ class JournalController extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteJournal(String userId, String journalId) async {
+    try {
+      await _repository.deleteJournal(userId, journalId);
+      journals.removeWhere(
+          (journal) => journal.id == journalId); // Remove from list
+      notifyListeners(); // Notify UI to update
+    } catch (e) {
+      throw Exception("Error deleting journal entry: $e");
+    }
+  }
 }
