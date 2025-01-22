@@ -55,68 +55,68 @@ class MyHomePage extends StatelessWidget {
         title: const Text('Activities'),
       ),
       body: SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: const Text(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
               "Quote of the Day",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-          ),
-          FutureBuilder<String>(
-            future: fetchQuote(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasError) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    "Error: ${snapshot.error}",
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                );
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    snapshot.data ?? "No quote available",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontStyle: FontStyle.italic,
+            FutureBuilder<String>(
+              future: fetchQuote(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text(
+                      "Error: ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                );
-              }
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text(
+                      snapshot.data ?? "No quote available",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                }
+              },
+            ),
+            Text(
               "Here are some activities that can help with feeling $selectedMood:",
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-          ),
-          Expanded(
-            child: FutureBuilder<List<Activity>>(
+            FutureBuilder<List<Activity>>(
               future: getActivities(selectedMood),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: CircularProgressIndicator(),
+                  );
                 } else if (snapshot.hasError) {
-                  return Center(
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: Text(
                       'Error: ${snapshot.error}',
                       style: const TextStyle(color: Colors.red),
                     ),
                   );
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
                     child: Text(
                       'No activities available.',
                       style: TextStyle(fontSize: 16),
@@ -124,49 +124,45 @@ class MyHomePage extends StatelessWidget {
                   );
                 } else {
                   final activities = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: activities.length,
-                    itemBuilder: (context, index) {
-                      final activity = activities[index];
-                      return ListTile(
-                        title: Text(activity.title),
-                        subtitle: Text(activity.description),
-                        trailing: Text(activity.category),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ActivityDetailPage(activity: activity),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                  return Column(
+                    children: activities
+                        .map(
+                          (activity) => ListTile(
+                            title: Text(activity.title),
+                            subtitle: Text(activity.description),
+                            trailing: Text(activity.category),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ActivityDetailPage(activity: activity),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                        .toList(),
                   );
                 }
               },
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
+            const SizedBox(height: 16),
+            Text(
               "Here is an article that can help with feeling $selectedMood:",
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-          ),
-          Expanded(
-            child: FutureBuilder<Map<String, dynamic>?>(
+            FutureBuilder<Map<String, dynamic>?>(
               future: fetchRelatedArticle(selectedMood),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError || snapshot.data == null) {
                   return const Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
                     child: Text(
                       "No related articles available.",
                       style: TextStyle(fontSize: 16),
@@ -174,41 +170,33 @@ class MyHomePage extends StatelessWidget {
                   );
                 } else {
                   final article = snapshot.data!;
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          article['title'],
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        // Expanded(
-                        //   child: SingleChildScrollView(
-                        //     child: Text(
-                        //       article['body'],
-                        //       style: const TextStyle(fontSize: 14),
-                        //     ),
-                        //   ),
-                        // ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "Author: ${article['author']}",
-                          style: const TextStyle(
-                              fontSize: 14, fontStyle: FontStyle.italic),
-                        ),
-                      ],
-                    ),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        article['title'],
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        article['body'],
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "Author: ${article['author']}",
+                        style: const TextStyle(
+                            fontSize: 14, fontStyle: FontStyle.italic),
+                      ),
+                    ],
                   );
                 }
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-      )
     );
   }
 }

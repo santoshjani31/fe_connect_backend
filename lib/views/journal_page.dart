@@ -75,8 +75,8 @@ class _JournalScreenState extends State<JournalScreen> {
 // Show dialog to edit journal entry
   Future<void> _showEditJournalDialog(
       String journalId, String initialTitle, String initialBody) async {
-    final _titleController = TextEditingController(text: initialTitle);
-    final _descriptionController = TextEditingController(text: initialBody);
+    final titleController = TextEditingController(text: initialTitle);
+    final descriptionController = TextEditingController(text: initialBody);
 
     showDialog(
       context: context,
@@ -87,11 +87,11 @@ class _JournalScreenState extends State<JournalScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: _titleController,
+                controller: titleController,
                 decoration: const InputDecoration(labelText: "Title"),
               ),
               TextField(
-                controller: _descriptionController,
+                controller: descriptionController,
                 decoration: const InputDecoration(labelText: "Description"),
                 maxLines: 4,
               ),
@@ -117,8 +117,8 @@ class _JournalScreenState extends State<JournalScreen> {
                         .doc(journalId);
 
                     await journalRef.update({
-                      'title': _titleController.text,
-                      'body': _descriptionController.text,
+                      'title': titleController.text,
+                      'body': descriptionController.text,
                       'timestamp': FieldValue.serverTimestamp(),
                     });
 
