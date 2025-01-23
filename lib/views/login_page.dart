@@ -112,7 +112,7 @@ class LoginFormPage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: loginUser,
-              child: const Text('Submit'),
+              child: const Text('Login'),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
