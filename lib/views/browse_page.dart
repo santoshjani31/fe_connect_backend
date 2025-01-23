@@ -52,6 +52,18 @@ class ExploreScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: activity.imageURL != null
+                            ? Image.network(activity.imageURL!,
+                                fit: BoxFit.cover, height: 135)
+                            : Image.network(
+                                'https://via.placeholder.com/400x200?text=No+Image+Available',
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: 110,
+                              ),
+                      ),
                       Padding(
                           padding: const EdgeInsets.all(2),
                           child: Text(
@@ -61,19 +73,6 @@ class ExploreScreen extends StatelessWidget {
                             ),
                             textAlign: TextAlign.center,
                           )),
-                      // const SizedBox(height: 5),
-                      // Text(
-                      //   activity.description,
-                      //   textAlign: TextAlign.center,
-                      // ),
-                      const SizedBox(height: 5),
-                      Text(
-                        activity.category,
-                        style: const TextStyle(
-                          fontStyle: FontStyle.italic,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
                     ],
                   ),
                 ),

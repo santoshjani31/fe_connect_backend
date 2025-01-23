@@ -25,6 +25,9 @@ dependencies:
   # Provider package for state management
   provider: ^6.0.1
 
+  # Email validator
+  email_validator: ^3.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -36,3 +39,5 @@ flutter:
     - assets/logo.png
     - assets/placeholder-image.png
     - assets/lavenderlogo.png
+    - assets/lavender_sunset.png
+    - assets/transparent_lavender_sunset.png

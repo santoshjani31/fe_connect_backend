@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart'; // Add this package for email validation
 import 'moods_page.dart';
 import '../models/user_model.dart'; // Import the User Model
 
@@ -16,11 +17,32 @@ class SignupPage extends StatelessWidget {
     final passwordController = TextEditingController();
 
     Future<void> createUser() async {
+      final email = emailController.text.trim();
+      final password = passwordController.text.trim();
+
+      // Validate email format before creating a user
+      if (!EmailValidator.validate(email)) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Invalid Email'),
+            content: const Text('Please enter a valid email address.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+        return;
+      }
+
       try {
-        final userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
+        final userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
         );
 
         // Get the current user's UID (after successful creation)
@@ -30,7 +52,7 @@ class SignupPage extends StatelessWidget {
           // Create a UserModel object
           UserModel userModel = UserModel(
             uid: uid,
-            email: emailController.text.trim(),
+            email: email,
             firstName: firstNameController.text.trim(),
             lastName: lastNameController.text.trim(),
             username: usernameController.text.trim(),
@@ -41,7 +63,6 @@ class SignupPage extends StatelessWidget {
               .collection('users')
               .doc(uid)
               .set(userModel.toMap());
-
 
           Navigator.pushReplacement(
             context,
